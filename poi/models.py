@@ -1,18 +1,25 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
-# Create your models here.
 class PointOfInterest(models.Model):
 
     name = models.CharField(max_length=100)
-    category_type =  models.CharField(max_length=20)
+    category_type = models.CharField(max_length=20)
     description = models.TextField(max_length=1000)
-    location = models.PointField()
+    latitude = models.FloatField(
+        validators=[MinValueValidator(-90), MaxValueValidator(90)],
+        help_text="Latitude between -90 and 90 degrees"
+        )
+    longitude = models.FloatField(
+        validators=[MinValueValidator(-180), MaxValueValidator(180)],
+        help_text="Longitude between -180 and 180 degrees"
+        )
+
     owner = models.ForeignKey(
         to='users.User',
         related_name='points_of_interest',
         on_delete=models.CASCADE
     )
-
 
     def __str__(self):
         return self.name
