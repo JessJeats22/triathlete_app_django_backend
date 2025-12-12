@@ -63,4 +63,6 @@ class TrailDetailView(APIView):
 
     # DELETE Route
     def delete(self, request, pk):
-        pass
+        trail = self.get_trail(pk)
+        trail.delete()
+        return Response(status=204)
