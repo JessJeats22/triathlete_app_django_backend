@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Trail
 from .serializers.common import TrailSerializer
+from rest_framework.exceptions import NotFound
 
 
 
@@ -21,3 +22,28 @@ class TrailShowView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, 201)
+    
+
+# URL: /trails/:pk/
+class TrailDetailView(APIView):
+    
+     # SHOW Route
+    def get(self, request, pk):
+
+        try:
+            trail = Trail.objects.get(pk=pk)
+        except Trail.DoesNotExist as e:
+            raise NotFound('TRAIL NOT FOUND')
+
+    
+        serializer = TrailSerializer(trail)
+        return Response(serializer.data)
+    
+    # PUT Route
+    def put(self, request, pk):
+        trail = self.get_trail(pk)
+
+
+    # DELETE Route
+    def delete(self, request, pk):
+        pass
