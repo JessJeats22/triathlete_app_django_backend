@@ -51,6 +51,21 @@ class TrailDetailView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+    
+
+    # PATCH Route
+    def patch(self, request, pk):
+        
+        try:
+            trail = Trail.objects.get(pk=pk)
+        except Trail.DoesNotExist:
+            raise NotFound('Trail not found')
+            
+        serializer = TrailSerializer(instance=trail, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
 
 
     # DELETE Route
