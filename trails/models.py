@@ -29,6 +29,8 @@ class Trail(models.Model):
     images = ArrayField(
         models.URLField(),
         size=8,
+        blank=True,
+        null=True
     )
 
     created_by = models.ForeignKey(
