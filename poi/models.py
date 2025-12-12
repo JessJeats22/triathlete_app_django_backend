@@ -22,5 +22,13 @@ class PointOfInterest(models.Model):
         on_delete=models.CASCADE
     )
 
+    trail = models.ForeignKey(
+        to='trails.Trail',
+        related_name='points_of_interest',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+)
+
     def __str__(self):
         return self.name
