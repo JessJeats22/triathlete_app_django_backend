@@ -26,26 +26,23 @@ class TrailShowView(APIView):
 
 # URL: /trails/:pk/
 class TrailDetailView(APIView):
+
+    # Get Trail Object
+    def get_trail(self, pk):
+        try:
+            return Trail.objects.get(pk=pk)
+        except Trail.DoesNotExist:
+            raise NotFound('Trail not found')
     
      # SHOW Route
     def get(self, request, pk):
-
-        try:
-            trail = Trail.objects.get(pk=pk)
-        except Trail.DoesNotExist as e:
-            raise NotFound('TRAIL NOT FOUND')
-
-    
+        trail = self.get_trail(pk)
         serializer = TrailSerializer(trail)
         return Response(serializer.data)
     
     # PUT Route
     def put(self, request, pk):
-        
-        try:
-            trail = Trail.objects.get(pk=pk)
-        except Trail.DoesNotExist:
-            raise NotFound('Trail not found')
+        trail = self.get_trail(pk)
             
         serializer = TrailSerializer(instance=trail, data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -56,11 +53,7 @@ class TrailDetailView(APIView):
     # PATCH Route
     def patch(self, request, pk):
         
-        try:
-            trail = Trail.objects.get(pk=pk)
-        except Trail.DoesNotExist:
-            raise NotFound('Trail not found')
-            
+        trail = self.get_trail(pk)
         serializer = TrailSerializer(instance=trail, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
