@@ -41,7 +41,16 @@ class TrailDetailView(APIView):
     
     # PUT Route
     def put(self, request, pk):
-        trail = self.get_trail(pk)
+        
+        try:
+            trail = Trail.objects.get(pk=pk)
+        except Trail.DoesNotExist:
+            raise NotFound('Trail not found')
+            
+        serializer = TrailSerializer(instance=trail, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 
     # DELETE Route
