@@ -3,12 +3,13 @@ from rest_framework.response import Response
 from .models import Trail
 from .serializers.common import TrailSerializer
 from rest_framework.exceptions import NotFound
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
 
 
 # URL: /trails (handler methods!)
 class TrailShowView(APIView):
-        
+    permission_classes = [IsAuthenticatedOrReadOnly]
         
     # INDEX ROUTE
     def get(self, reqeust):
@@ -18,6 +19,7 @@ class TrailShowView(APIView):
     
      # POST ROUTE
     def post(self, request):
+        request.data['owner'] = request.user.id
         serializer = TrailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -26,6 +28,7 @@ class TrailShowView(APIView):
 
 # URL: /trails/:pk/
 class TrailDetailView(APIView):
+    permission_classes = [IsAuthenticated]
 
     # Get Trail Object
     def get_trail(self, pk):
