@@ -4,6 +4,7 @@ from .models import Trail
 from .serializers.common import TrailSerializer
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from utils.permissions import IsOwnerOrReadOnly
 
 
 
@@ -19,7 +20,7 @@ class TrailShowView(APIView):
     
      # POST ROUTE
     def post(self, request):
-        request.data['owner'] = request.user.id
+        request.data['created_by'] = request.user.id
         serializer = TrailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -28,7 +29,7 @@ class TrailShowView(APIView):
 
 # URL: /trails/:pk/
 class TrailDetailView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOwnerOrReadOnly]
 
     # Get Trail Object
     def get_trail(self, pk):
@@ -46,8 +47,8 @@ class TrailDetailView(APIView):
     # PUT Route
     def put(self, request, pk):
         trail = self.get_trail(pk)
-            
-        serializer = TrailSerializer(instance=trail, data=request.data)
+        self.check_object_permissions(request, trail)    
+        serializer = TrailSerializer(instance=trail, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
@@ -57,6 +58,7 @@ class TrailDetailView(APIView):
     def patch(self, request, pk):
         
         trail = self.get_trail(pk)
+        self.check_object_permissions(request, trail)
         serializer = TrailSerializer(instance=trail, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -67,5 +69,6 @@ class TrailDetailView(APIView):
     # DELETE Route
     def delete(self, request, pk):
         trail = self.get_trail(pk)
+        self.check_object_permissions(request, trail)
         trail.delete()
         return Response(status=204)
