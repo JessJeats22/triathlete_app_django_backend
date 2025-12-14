@@ -56,7 +56,6 @@ class TrailDetailView(APIView):
 
     # PATCH Route
     def patch(self, request, pk):
-        
         trail = self.get_trail(pk)
         self.check_object_permissions(request, trail)
         serializer = TrailSerializer(instance=trail, data=request.data, partial=True)
