@@ -5,6 +5,8 @@ from .serializers.common import TrailSerializer
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from utils.permissions import IsOwnerOrReadOnly
+from django.shortcuts import get_object_or_404
+
 
 
 
@@ -29,6 +31,7 @@ class TrailShowView(APIView):
 
 # URL: /trails/:pk/
 class TrailDetailView(APIView):
+
     permission_classes = [IsOwnerOrReadOnly]
 
     # Get Trail Object
@@ -70,4 +73,18 @@ class TrailDetailView(APIView):
         trail = self.get_trail(pk)
         self.check_object_permissions(request, trail)
         trail.delete()
+        return Response(status=204)
+    
+
+class TrailFavouriteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        trail = get_object_or_404(Trail, pk=pk)
+        request.user.favourited_trails.add(trail)
+        return Response({'detail': 'Trail favourited'}, status=201)
+    
+    def delete(self, request, pk):
+        trail = get_object_or_404(Trail, pk=pk)
+        request.user.favourited_trails.remove(trail)
         return Response(status=204)

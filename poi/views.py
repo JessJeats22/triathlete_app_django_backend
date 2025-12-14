@@ -9,8 +9,6 @@ from utils.permissions import IsOwnerOrReadOnly
 from .serializers.populated import PopulatedPOISerializer
 
 
-# Create your views here.
-
 # URL: /trails/:id/pois/
 class POIListCreateView(ListCreateAPIView):
     serializer_class = POISerializer
@@ -41,3 +39,4 @@ class POIDetailView(RetrieveUpdateDestroyAPIView):
         if self.request.method == 'GET':
             return PopulatedPOISerializer
         return POISerializer
+
