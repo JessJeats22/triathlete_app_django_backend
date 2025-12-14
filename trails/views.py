@@ -44,7 +44,7 @@ class TrailDetailView(APIView):
      # SHOW Route
     def get(self, request, pk):
         trail = self.get_trail(pk)
-        serializer = TrailSerializer(trail)
+        serializer = TrailSerializer(trail, context={'request': request})
         return Response(serializer.data)
     
     # PUT Route
