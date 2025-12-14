@@ -15,9 +15,9 @@ class TrailShowView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
         
     # INDEX ROUTE
-    def get(self, reqeust):
+    def get(self, request):
         trails = Trail.objects.all()
-        serializer = TrailSerializer(trails, many=True)
+        serializer = TrailSerializer(trails, many=True, context={'request': request})
         return Response(serializer.data)
     
      # POST ROUTE
