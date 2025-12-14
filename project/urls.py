@@ -6,5 +6,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('trails/', include('trails.urls')),
     path('auth/', include('users.urls')),
+    path('poi/', include('poi.urls')),
     path('', include('poi.urls')), 
 ]

@@ -5,4 +5,6 @@ class POISerializer(ModelSerializer):
     class Meta:
         model = PointOfInterest
         fields = '__all__'
-        read_only_fields = ('owner', 'trail')
+        read_only_fields = ('created_by', 'trail')
+
+

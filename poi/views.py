@@ -5,8 +5,8 @@ from trails.models import Trail
 from .serializers.common import POISerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-
-
+from utils.permissions import IsOwnerOrReadOnly
+from .serializers.populated import PopulatedPOISerializer
 
 
 # Create your views here.
@@ -28,10 +28,16 @@ class POIListCreateView(ListCreateAPIView):
         )
 
         serializer.save(
-        owner=self.request.user,
+        created_by=self.request.user,
         trail=trail
     )
 
 # URL /pois/:id/
 class POIDetailView(RetrieveUpdateDestroyAPIView):
-    pass
+    queryset = PointOfInterest.objects.all()
+    permission_classes = [IsOwnerOrReadOnly]
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return PopulatedPOISerializer
+        return POISerializer
