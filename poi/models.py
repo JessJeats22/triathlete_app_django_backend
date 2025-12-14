@@ -16,7 +16,7 @@ class PointOfInterest(models.Model):
         help_text="Longitude between -180 and 180 degrees"
         )
 
-    owner = models.ForeignKey(
+    created_by = models.ForeignKey(
         to='users.User',
         related_name='points_of_interest',
         on_delete=models.CASCADE
