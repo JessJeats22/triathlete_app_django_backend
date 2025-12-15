@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Trail
 from .serializers.common import TrailSerializer
+from .serializers.populated import PopulatedTrailSerializer
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from utils.permissions import IsOwnerOrReadOnly
@@ -44,7 +45,7 @@ class TrailDetailView(APIView):
      # SHOW Route
     def get(self, request, pk):
         trail = self.get_trail(pk)
-        serializer = TrailSerializer(trail, context={'request': request})
+        serializer = PopulatedTrailSerializer(trail,context={'request': request})
         return Response(serializer.data)
     
     # PUT Route
