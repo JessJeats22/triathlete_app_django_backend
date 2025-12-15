@@ -1,6 +1,8 @@
 from .serializers.common import UserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from .serializers.me import MeSerializer
+from rest_framework.permissions import IsAuthenticated
 
 # Path: /auth/sign-up/
 class SignUpView(APIView):
@@ -9,3 +11,11 @@ class SignUpView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({ 'message': 'Registration successful' }, 201)
+    
+
+class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = MeSerializer(request.user)
+        return Response(serializer.data)
