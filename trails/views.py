@@ -7,6 +7,8 @@ from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from utils.permissions import IsOwnerOrReadOnly
 from django.shortcuts import get_object_or_404
+from django.conf import settings
+import requests
 
 
 
@@ -89,3 +91,41 @@ class TrailFavouriteView(APIView):
         trail = get_object_or_404(Trail, pk=pk)
         request.user.favourited_trails.remove(trail)
         return Response(status=204)
+
+
+
+class TrailWeatherView(APIView):
+    def get(self, request, pk):
+        trail = get_object_or_404(Trail, pk=pk)
+
+        current_response = requests.get(
+            "https://api.openweathermap.org/data/2.5/weather",
+            params={
+                "lat": trail.latitude,
+                "lon": trail.longitude,
+                "appid": settings.OPENWEATHER_API_KEY,
+                "units": "metric",
+            }
+        )
+
+        forecast_response = requests.get(
+            "https://api.openweathermap.org/data/2.5/forecast",
+            params={
+                "lat": trail.latitude,
+                "lon": trail.longitude,
+                "appid": settings.OPENWEATHER_API_KEY,
+                "units": "metric",
+            }
+        )
+
+      
+    
+        current = current_response.json()
+        forecast = forecast_response.json()
+
+        return Response({
+            "temp": current["main"]["temp"],
+            "feels_like": current["main"]["feels_like"],
+            "wind": current["wind"]["speed"],
+            "forecast": forecast["list"][:8],  # next ~24 hours (3h intervals)
+        })
