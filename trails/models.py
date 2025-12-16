@@ -16,15 +16,20 @@ class Trail(models.Model):
     country = models.CharField(max_length=20)
     city_town = models.CharField(max_length=20)
     latitude = models.FloatField(
+        null=True,
+        blank=True,
         validators=[MinValueValidator(-90), MaxValueValidator(90)],
         help_text="Latitude between -90 and 90 degrees"
         )
     longitude = models.FloatField(
+       null=True,
+        blank=True,
         validators=[MinValueValidator(-180), MaxValueValidator(180)],
         help_text="Longitude between -180 and 180 degrees"
         )
-    distance_km = models.DecimalField(max_digits=5, decimal_places=2)
-    elevation_gain = models.IntegerField()
+    distance_km = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    elevation_gain = models.IntegerField(null=True,
+        blank=True,)
     description = models.TextField()
     images = ArrayField(
         models.URLField(),
