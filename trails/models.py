@@ -38,6 +38,13 @@ class Trail(models.Model):
         null=True
     )
 
+    gpx_url = models.URLField(
+        blank=True,
+        null=True,
+        help_text="Public Cloudinary URL for GPX file"
+    )
+
+
     created_by = models.ForeignKey(
         to='users.User',
         related_name='trails_owned',
