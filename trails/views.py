@@ -129,3 +129,30 @@ class TrailWeatherView(APIView):
             "wind": current["wind"]["speed"],
             "forecast": forecast["list"][:8],  # next ~24 hours (3h intervals)
         })
+
+
+class TrailImageView(APIView):
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
+    def delete(self, request, pk):
+        trail = get_object_or_404(Trail, pk=pk)
+        self.check_object_permissions(request, trail)
+
+        image_url = request.data.get("image_url")
+
+        if not image_url:
+            return Response(
+                {"detail": "No image_url provided"},
+                status=400
+            )
+
+        if image_url not in trail.images:
+            return Response(
+                {"detail": "Image not found on this trail"},
+                status=404
+            )
+
+        trail.images.remove(image_url)
+        trail.save()
+
+        return Response(status=204)
