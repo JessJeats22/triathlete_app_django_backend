@@ -6,14 +6,14 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Trail(models.Model):
 
     TYPE_CHOICES = [
-        ('swim', 'Swim'),
-        ('bike', 'Bike'),
-        ('run', 'Run'),
+        ('Swim', 'Swim'),
+        ('Bike', 'Bike'),
+        ('Run', 'Run'),
     ]
 
     name = models.CharField(max_length=100)
     trail_type = models.CharField(max_length=20, choices=TYPE_CHOICES)
-    country = models.CharField(max_length=20)
+    country = models.CharField(max_length=20)       
     city_town = models.CharField(max_length=20)
     latitude = models.FloatField(
         null=True,

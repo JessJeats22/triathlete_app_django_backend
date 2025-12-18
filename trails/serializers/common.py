@@ -7,6 +7,18 @@ class TrailSerializer(ModelSerializer):
     class Meta:
         model = Trail
         fields = '__all__'
+        read_only_fields = (
+            "id",
+            "created_by",
+            "images",
+            "gpx_url",
+            "distance_km",
+            "elevation_gain_m",
+            "elevation_loss_m",
+            "elevation_min_m",
+            "elevation_max_m",
+            "is_favourited",
+        )
 
     def get_is_favourited(self, obj):
         request = self.context.get('request')

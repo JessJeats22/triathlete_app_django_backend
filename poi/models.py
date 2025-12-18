@@ -4,9 +4,9 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class PointOfInterest(models.Model):
 
     name = models.CharField(max_length=100)
-    category_type = models.CharField(max_length=20)
+   
     description = models.TextField(max_length=1000)
-    city_town = models.CharField(max_length=20)
+
     latitude = models.FloatField(
         validators=[MinValueValidator(-90), MaxValueValidator(90)],
         help_text="Latitude between -90 and 90 degrees"
