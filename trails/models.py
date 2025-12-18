@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MinValueValidator, MaxValueValidator
+from .services.gpx_metrics import extract_gpx_metrics
+
 
 
 class Trail(models.Model):
@@ -53,3 +55,18 @@ class Trail(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
+    def compute_gpx_metrics(self):
+   
+        if not self.gpx_url:
+            return
+
+        metrics = extract_gpx_metrics(self.gpx_url)
+
+        if not metrics:
+            return
+
+        self.distance_km = metrics.get("distance_km")
+        self.elevation_gain = metrics.get("elevation_gain")
+
+        self.save(update_fields=["distance_km", "elevation_gain"])
