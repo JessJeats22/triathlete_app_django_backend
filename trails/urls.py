@@ -1,5 +1,5 @@
 from django.urls import path
-from trails.views import TrailShowView, TrailDetailView, TrailFavouriteView, TrailWeatherView
+from trails.views import TrailShowView, TrailDetailView, TrailFavouriteView, TrailWeatherView, TrailImageView
 
 
 
@@ -9,4 +9,5 @@ urlpatterns = [
     path('<int:pk>/', TrailDetailView.as_view()),
     path('<int:pk>/favourite/', TrailFavouriteView.as_view()),
     path('<int:pk>/weather/', TrailWeatherView.as_view()),
+    path("<int:pk>/images/", TrailImageView.as_view()),
 ]
