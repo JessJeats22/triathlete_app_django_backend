@@ -6,9 +6,9 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Trail(models.Model):
 
     TYPE_CHOICES = [
-        ('Swim', 'Swim'),
-        ('Bike', 'Bike'),
-        ('Run', 'Run'),
+        ('swim', 'Swim'),
+        ('bike', 'Bike'),
+        ('run', 'Run'),
     ]
 
     name = models.CharField(max_length=100)
