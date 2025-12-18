@@ -98,6 +98,8 @@ class TrailWeatherView(APIView):
     def get(self, request, pk):
         trail = get_object_or_404(Trail, pk=pk)
 
+        print("LAT/LON:", trail.latitude, trail.longitude)
+
         current_response = requests.get(
             "https://api.openweathermap.org/data/2.5/weather",
             params={
@@ -118,7 +120,8 @@ class TrailWeatherView(APIView):
             }
         )
 
-      
+        print("STATUS:", current_response.status_code)
+        print("BODY:", current_response.text)
     
         current = current_response.json()
         forecast = forecast_response.json()

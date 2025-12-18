@@ -68,5 +68,8 @@ class Trail(models.Model):
 
         self.distance_km = metrics.get("distance_km")
         self.elevation_gain = metrics.get("elevation_gain")
+        self.latitude = metrics.get("latitude")
+        self.longitude = metrics.get("longitude")
 
-        self.save(update_fields=["distance_km", "elevation_gain"])
+
+        self.save(update_fields=["distance_km", "elevation_gain", "latitude", "longitude",])

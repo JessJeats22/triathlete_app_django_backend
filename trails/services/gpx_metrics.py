@@ -22,9 +22,7 @@ def haversine(lat1, lon1, lat2, lon2):
 
 
 def extract_gpx_metrics(gpx_url: str) -> dict:
-    """
-    Download a GPX file and return distance (km) and elevation gain (m).
-    """
+   
 
     response = requests.get(gpx_url, timeout=10)
     response.raise_for_status()
@@ -38,6 +36,8 @@ def extract_gpx_metrics(gpx_url: str) -> dict:
 
     if len(points) < 2:
         return {}
+
+    start_point = points[0]
 
     total_distance = 0.0
     elevation_gain = 0.0
@@ -59,4 +59,6 @@ def extract_gpx_metrics(gpx_url: str) -> dict:
     return {
         "distance_km": round(total_distance / 1000, 2),
         "elevation_gain": round(elevation_gain),
+        "latitude": start_point.latitude,
+        "longitude": start_point.longitude,
     }
