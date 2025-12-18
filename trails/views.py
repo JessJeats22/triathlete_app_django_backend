@@ -25,10 +25,10 @@ class TrailShowView(APIView):
     
      # POST ROUTE
     def post(self, request):
-        request.data['created_by'] = request.user.id
         serializer = TrailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        trail = serializer.save(created_by=request.user)
+        trail.compute_gpx_metrics() 
         return Response(serializer.data, 201)
     
 

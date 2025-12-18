@@ -10,8 +10,6 @@ class TrailSerializer(ModelSerializer):
         read_only_fields = (
             "id",
             "created_by",
-            "images",
-            "gpx_url",
             "distance_km",
             "elevation_gain_m",
             "elevation_loss_m",
