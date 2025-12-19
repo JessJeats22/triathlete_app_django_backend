@@ -14,6 +14,7 @@ whitenoise = "*"
 gunicorn = "*"
 gpxpy = "*"
 requests = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
