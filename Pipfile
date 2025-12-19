@@ -13,6 +13,7 @@ django-cors-headers = "*"
 whitenoise = "*"
 gunicorn = "*"
 gpxpy = "*"
+requests = "*"
 
 [dev-packages]
 
