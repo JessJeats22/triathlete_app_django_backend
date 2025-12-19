@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from utils.permissions import IsOwnerOrReadOnly
 from .serializers.populated import PopulatedPOISerializer
+from rest_framework.exceptions import PermissionDenied
 
 
 # URL: /trails/:id/pois/
@@ -19,16 +20,23 @@ class POIListCreateView(ListCreateAPIView):
         trail_id=self.kwargs['trail_id']
         )
     
+
+
     def perform_create(self, serializer):
         trail = get_object_or_404(
-            Trail,
-            pk=self.kwargs['trail_id']
-        )
+        Trail,
+        pk=self.kwargs['trail_id']
+    )
+
+  
+        if trail.created_by != self.request.user:
+            raise PermissionDenied("Only the trail owner can add points of interest.")
 
         serializer.save(
-        created_by=self.request.user,
-        trail=trail
+        trail=trail,
+        created_by=self.request.user
     )
+
 
 # URL /pois/:id/
 class POIDetailView(RetrieveUpdateDestroyAPIView):
