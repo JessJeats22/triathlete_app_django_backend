@@ -1,6 +1,6 @@
-# 🏃‍♂️ Triathlon Trails API — Django REST Backend
+# Triathlon Trails API — Django REST Backend
 
-The Triathlon Trails API powers the Triathlon Trails App — a full-stack training route planner for endurance athletes.  
+The Triathlon Trails API powers the TriTrails App, a full-stack training route planner for endurance athletes.  
 It provides endpoints for trails, GPX-derived route metrics, favourites, weather data, and map-based Points of Interest (POIs), with secure authentication and owner-based permissions.
 
 ---
@@ -244,10 +244,12 @@ These endpoints add or remove a trail from `User.favourited_trails`.
 ### Trail Images
 
 DELETE /trails/<id>/images/
+
+
+Request body:
 {
 "image_url": "<url>"
 }
-
 
 Removes a specific image from the trail’s `images` gallery.
 
@@ -291,6 +293,7 @@ Modification of POIs is restricted to the **creating user** (`IsOwnerOrReadOnly`
 git clone https://github.com/JessJeats22/triathlete_app_django_backend.git
 cd triathlete_app_django_backend
 
+# Create and activate a virtual environment
 python -m venv venv
 source venv/bin/activate   # Windows: venv\Scripts\activate
 
@@ -314,3 +317,139 @@ python manage.py migrate
 python manage.py createsuperuser   # optional
 python manage.py runserver
 ```
+
+---
+
+## Technologies Used
+
+**Backend**
+
+- Python • Django • Django REST Framework
+- PostgreSQL
+- djangorestframework-simplejwt (JWT authentication)
+- gpxpy (GPX parsing)
+- Requests (HTTP client)
+
+**External Services**
+
+- OpenWeather API (trail-specific weather data)
+- Cloudinary (image + GPX file storage)
+
+**Development & Tooling**
+
+- Git / GitHub
+- VS Code
+- Virtualenv
+
+---
+
+## Project Brief
+
+This backend was built as part of the **General Assembly Software Engineering Immersive** program.
+
+The brief required:
+
+- A Django REST API with relational data models
+- A separate React frontend consuming the API
+- Full CRUD functionality with authentication and permissions
+- Public deployment of both applications
+- Clean, maintainable and professionally structured code
+
+The project emphasised **API design, data modelling, and realistic feature implementation** over simple CRUD-only behaviour.
+
+---
+
+## Planning
+
+Key planning activities included:
+
+- Designing an ERD for Users → Trails → POIs → Favourites
+- Defining API routes and expected response shapes
+- Prioritising MVP features before enhancements
+- Sequencing backend implementation to unblock frontend development
+
+Early attention was given to **data relationships and permissions**, reducing the need for major refactors later in the sprint.
+
+---
+
+## Build / Code Process
+
+The backend was developed iteratively:
+
+1. Implemented the custom user model and JWT authentication
+2. Built the Trail model and GPX metrics service
+3. Added favourites and ownership-based permissions
+4. Introduced Points of Interest tied to trails
+5. Integrated backend-proxied weather requests
+6. Refined serializers and nested representations
+
+Where trade-offs were required, **clarity, correctness, and maintainability** were prioritised.
+
+---
+
+## Challenges
+
+- Learning DRF conventions while delivering within a 7-day sprint
+- Handling derived data from GPX files safely and accurately
+- Designing permissions that balanced UX simplicity with security
+- Keeping the codebase consistent as new features were added
+
+---
+
+## Wins
+
+- Delivered genuinely useful behaviour beyond basic CRUD
+- Achieved strong separation of concerns with reusable service logic
+- Integrated external services securely and cleanly
+- Built a scalable foundation for future mapping and training features
+
+---
+
+## Key Learnings
+
+- Greater confidence working with Django ORM and DRF serializers
+- Deeper understanding of relational data modelling and API design
+- The value of isolating domain logic in service modules
+- Importance of aligning backend behaviour with frontend consumption patterns
+- Improved debugging and decision-making under time constraints
+
+---
+
+## Design Decisions & Trade-Offs
+
+- `ArrayField` used for images to keep the model lightweight during the sprint
+- Metrics derived server-side to guarantee consistent trail data
+- Weather calls handled in the backend to avoid exposing API keys
+- Permissions kept explicit and restrictive to reduce ambiguity
+- Some abstractions intentionally deferred to maintain delivery momentum
+
+---
+
+## Known Limitations
+
+- Limited server-side filtering and search on `/trails/`
+- GPX parsing assumes a conventional GPX file structure
+- Weather endpoint has minimal failure-mode feedback
+- Some upload and error states are logged rather than surfaced in the UI
+
+---
+
+## Future Improvements
+
+- Add API-level filtering and search capabilities
+- Extend GPX metrics (min/max elevation, descent, segment stats)
+- Allow collaborative or shared POI management
+- Add OpenAPI / Swagger documentation
+- Improve validation and user-visible error responses
+
+---
+
+## Project Context
+
+- **Timeframe:** 7-day sprint  
+- **Role:** Solo developer  
+- **Responsibilities:** planning, modelling, API design, implementation, testing, deployment
+
+This backend was designed to demonstrate **professional full-stack engineering practices** with realistic architecture, external integrations, and domain-driven behaviour.
+
+---
