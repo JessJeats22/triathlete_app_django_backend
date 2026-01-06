@@ -1,7 +1,7 @@
 # Triathlon Trails API — Django REST Backend
 
-The Triathlon Trails API powers the TriTrails App, a full-stack training route planner for endurance athletes.  
-It provides endpoints for trails, GPX-derived route metrics, favourites, weather data, and map-based Points of Interest (POIs), with secure authentication and owner-based permissions.
+As a keen Triathlete myself, I created a full-stack training route planner for endurance athletes (TriTrails)
+The app provides endpoints for trails, GPX-derived route metrics, favourites, weather data, and map-based Points of Interest (POIs), with secure authentication and owner-based permissions.
 
 ---
 
